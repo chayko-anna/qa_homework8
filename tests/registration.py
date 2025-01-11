@@ -25,9 +25,10 @@ class RegistrationPage:
         browser.element('[id="userNumber"]').type(param).press_tab()
 
     def select_birth_date(self, day, month, year):
-        browser.element('[class="react-datepicker__month-select"]').element('[value="0"]').click()
-        browser.element('[class="react-datepicker__year-select"]').element('[value="2000"]').click()
-        browser.element('[class="react-datepicker__day react-datepicker__day--013"]').click()
+        browser.element('#dateOfBirthInput').click()
+        browser.element('.react-datepicker__month-select').type(month)
+        browser.element('.react-datepicker__year-select').type(year)
+        browser.element(f'.react-datepicker__day--0{day}:not(.react-datepicker__day--outside-month)').click()
 
     def select_photo(self, filename):
         browser.element('[id="uploadPicture"]').set_value(os.path.abspath(filename))
@@ -38,8 +39,14 @@ class RegistrationPage:
             browser.all('.subjects-auto-complete__menu').element_by(have.text(subject)).click()
 
     def choose_hobby(self, hobbies):
-        browser.element('[for="hobbies-checkbox-1"]').click()
-        browser.element('[for="hobbies-checkbox-2"]').click()
+        for hobby in hobbies:
+            match hobby:
+                case 'Sports':
+                    browser.element('[for="hobbies-checkbox-1"]').click()
+                case 'Reading':
+                    browser.element('[for="hobbies-checkbox-2"]').click()
+                case 'Music':
+                    browser.element('[for="hobbies-checkbox-3"]').click()
 
     def type_address(self, address):
         browser.element('[id="currentAddress"]').type(address)
@@ -50,7 +57,14 @@ class RegistrationPage:
 
     def select_city(self, city):
         browser.element('[id="city"]').click()
-        browser.element('#react-select-4-option-1').click()
+        browser.element('#react-select-4-option-0').click()
 
     def press_submit(self):
         browser.element('[id="submit"]').click()
+
+    def assert_user_info(self, full_name, email, bday, gender, number, sub1, hob1, img, address,
+                         state, city):
+        browser.element('.table').all('td').even.should(have.exact_texts(
+            full_name, email, gender, number, bday, sub1, hob1, img, address,
+            f'{state} {city}'
+        ))
