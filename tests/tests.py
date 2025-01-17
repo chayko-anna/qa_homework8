@@ -16,7 +16,7 @@ def test_form():
     reg_test.select_subject(subjects=['Computer Science'])
     reg_test.choose_hobby(hobbies=['Sports'])
 
-    reg_test.select_photo("../tests/shutterstock_2331893385.jpg")
+    reg_test.select_photo("../res/shutterstock_2331893385.jpg")
 
     reg_test.type_address('Улица Пушкина, дом Колотушкина')
     reg_test.select_state('NCR')

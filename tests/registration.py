@@ -1,4 +1,4 @@
-from selene import browser, have
+from selene import browser, have, be
 import os.path
 
 
@@ -53,11 +53,11 @@ class RegistrationPage:
 
     def select_state(self, state):
         browser.element('[id="state"]').click()
-        browser.element('#react-select-3-option-0').click()
+        browser.element('#react-select-3-input').type(state).should(be.visible).press_enter()
 
     def select_city(self, city):
         browser.element('[id="city"]').click()
-        browser.element('#react-select-4-option-0').click()
+        browser.element('#react-select-4-input').type(city).should(be.visible).press_enter()
 
     def press_submit(self):
         browser.element('[id="submit"]').click()
