@@ -1,5 +1,5 @@
 from registration import RegistrationPage
-from res.user_data import user_for_registration
+from tests.user_data import user_for_registration
 
 
 def test_form():

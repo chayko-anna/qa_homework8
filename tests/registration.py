@@ -1,4 +1,4 @@
-from selene import browser, have
+from selene import browser, have, be
 import os.path
 
 
@@ -36,11 +36,10 @@ class RegistrationPage:
 
         browser.element('[id="uploadPicture"]').set_value(os.path.abspath('../res/' f'{user.img}'))
 
-        browser.element('[id="currentAddress"]').type(user.address)
         browser.element('[id="state"]').click()
-        browser.element('#react-select-3-option-0').click()
+        browser.element('#react-select-3-input').type(user.state).should(be.visible).press_enter()
         browser.element('[id="city"]').click()
-        browser.element('#react-select-4-option-0').click()
+        browser.element('#react-select-4-input').type(user.city).should(be.visible).press_enter()
 
         browser.element('[id="submit"]').click()
 
