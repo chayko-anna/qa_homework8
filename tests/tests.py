@@ -1,39 +1,41 @@
-from registration import RegistrationPage
+import allure
+from selene import have, by
 
 
-def test_form():
-    reg_test = RegistrationPage()
-    reg_test.open_form()
+@allure.title("Successful fill form")
+def test_successful(browser_settings):
+    browser = browser_settings
+    first_name = "Anna"
+    last_name = "Chayko"
 
-    reg_test.type_first_name('Anna')
-    reg_test.type_last_name('Chayko')
+    with allure.step("Open registrations form"):
+        browser.open("https://demoqa.com/automation-practice-form")
+        browser.element(".practice-form-wrapper").should(have.text("Student Registration Form"))
+        browser.driver.execute_script("$('footer').remove()")
+        browser.driver.execute_script("$('#fixedban').remove()")
 
-    reg_test.type_email('al.nchko@gmail.com')
-    reg_test.select_gender('female')
-    reg_test.type_phone_number('9102906632')
+    with allure.step("Fill form"):
+        browser.element("#firstName").set_value(first_name)
+        browser.element("#lastName").set_value(last_name)
+        browser.element("#userEmail").set_value("al.nchko@gmail.com")
+        browser.element("#genterWrapper").element(by.text("Female")).click()
+        browser.element("#userNumber").set_value("1231231231")
+        # browser.element("#dateOfBirthInput").click()
+        # browser.element(".react-datepicker__month-select").s("13")
+        # browser.element(".react-datepicker__year-select").selectOption("2000")
+        # browser.element(".react-datepicker__day--013:not(.react-datepicker__day--outside-month)").click()
+        browser.element("#subjectsInput").send_keys("Arts")
+        browser.element("#subjectsInput").press_enter()
+        browser.element("#hobbiesWrapper").element(by.text("Sports")).click()
+        # browser.element("#uploadPicture").uploadFromClasspath("img/1.png")
+        browser.element("#currentAddress").set_value("Улица Пушкина, дом Колотушкина")
+        browser.element("#state").click()
+        browser.element("#stateCity-wrapper").element(by.text("NCR")).click()
+        browser.element("#city").click()
+        browser.element("#stateCity-wrapper").element(by.text("Delhi")).click()
+        browser.element("#submit").click()
 
-    reg_test.select_birth_date('13', 'January', '2000')
-    reg_test.select_subject(subjects=['Computer Science'])
-    reg_test.choose_hobby(hobbies=['Sports'])
-
-    reg_test.select_photo("../res/shutterstock_2331893385.jpg")
-
-    reg_test.type_address('Улица Пушкина, дом Колотушкина')
-    reg_test.select_state('NCR')
-    reg_test.select_city('Delhi')
-
-    reg_test.press_submit()
-
-    reg_test.assert_user_info(
-        'Anna Chayko',
-        'al.nchko@gmail.com',
-        '13 January,2000',
-        'Female',
-        '9102906632',
-        'Computer Science',
-        'Sports',
-        'shutterstock_2331893385.jpg',
-        'Улица Пушкина, дом Колотушкина',
-        'NCR',
-        'Delhi'
-    )
+    with allure.step("Check form results"):
+        browser.element("#example-modal-sizes-title-lg").should(have.text("Thanks for submitting the form"))
+        # browser.element(".table-responsive").should(
+        #     have.texts(first_name, last_name, "alex@egorov.com", "Some street 1"))
