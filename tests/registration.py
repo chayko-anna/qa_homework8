@@ -5,6 +5,8 @@ import os.path
 class RegistrationPage:
     def open_form(self):
         browser.open('https://demoqa.com/automation-practice-form')
+        browser.driver.execute_script("$('#fixedban').remove()")
+        browser.driver.execute_script("$('footer').remove()")
 
     def type_email(self, param):
         browser.element('[id="userEmail"]').type(param)
