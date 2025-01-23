@@ -5,6 +5,8 @@ import os.path
 class RegistrationPage:
     def open_form(self):
         browser.open('https://demoqa.com/automation-practice-form')
+        browser.driver.execute_script("$('#fixedban').remove()")
+        browser.driver.execute_script("$('footer').remove()")
 
     def register_user(self, user):
         browser.element('[id="userEmail"]').type(user.email)
@@ -21,7 +23,8 @@ class RegistrationPage:
         browser.element('#dateOfBirthInput').click()
         browser.element('.react-datepicker__month-select').type(user.birthday_date.get("month"))
         browser.element('.react-datepicker__year-select').type(user.birthday_date.get("year"))
-        browser.element(f'.react-datepicker__day--0{user.birthday_date.get("day")}:not(.react-datepicker__day--outside-month)').click()
+        browser.element(
+            f'.react-datepicker__day--0{user.birthday_date.get("day")}:not(.react-datepicker__day--outside-month)').click()
 
         browser.element('[id="subjectsInput"]').type(user.subject)
         browser.all('.subjects-auto-complete__menu').element_by(have.text(user.subject)).click()
@@ -35,6 +38,8 @@ class RegistrationPage:
                 browser.element('[for="hobbies-checkbox-3"]').click()
 
         browser.element('[id="uploadPicture"]').set_value(os.path.abspath('../res/' f'{user.img}'))
+
+        browser.element('[id="currentAddress"]').type(user.address)
 
         browser.element('[id="state"]').click()
         browser.element('#react-select-3-input').type(user.state).should(be.visible).press_enter()
